@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Week 2 Components</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <main>
+        <nav>
+            <ul class="main-nav">
+                <li class="nav-item">Home</li>
+                <li class="nav-item">Users</li>
+                <li class="nav-item">Portfolio</li>
+                <li class="nav-item">Contact</li>
+            </ul>
+        </nav>
+        <article>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea, inventore. Ullam aliquam eos assumenda dolores amet quas expedita consequuntur voluptas consequatur possimus cum, praesentium vel officiis ducimus hic, tempore illum.Amet dolore odio molestias voluptatum officiis ut, culpa ea, error excepturi non pariatur aliquid quae maxime inventore laboriosam beatae quo minus assumenda odit, accusantium numquam hic iure aliquam quos. Omnis.
+
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero odit, accusantium magnam reprehenderit voluptate ratione, quis ex minima similique facilis praesentium fugiat, quidem hic pariatur fuga alias aut repellat distinctio.Maiores, magnam expedita? Expedita labore ea voluptate, delectus qui quia velit quisquam iste nisi repellat incidunt totam cum quidem. Quos officia odio sint assumenda minus quam ut non, suscipit quidem?
+        </article>
+
+        <h3>Our Team</h3>
+        <hr>
+        <div id="app">
+            <user first_name="Fernando" last_name="D'Oria" role="Designer" @pass-func-call-up="logMainMessage"></user>
+            <user first_name="Seth" last_name="Myers" role="Late Night Host"></user>
+        </div>
+    </main>
+
+    <!-- templates! -->
+    <template id="activeuser">
+        <div>
+            <h3>{{ role }}</h3>
+            <p>{{ first_name }}</p>
+            <p>{{ last_name }}</p>
+            <button v-on:click="logChildMsg">log child click</button>
+            <button v-on:click="runParentFunc">run a parent function</button>
+        </div>
+    </template>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
