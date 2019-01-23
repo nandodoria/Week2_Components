@@ -24,6 +24,17 @@
         </div>
     </main>
 
+    <!-- templates -->
+    <template id="userList">
+        <div>
+            <h3>Current User:
+                <span v-if="users.length > 0">
+                    {{ users[0].first_name }} {{ users[0].last_name }}
+                </span>
+            </h3>
+        </div>
+    </template>
+
 
     <script src="js/main.js"></script>
 </body>
