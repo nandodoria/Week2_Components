@@ -5,14 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Week 2 Components</title>
+
+    <link rel="stylesheet" href="css/main.css">
+
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.2/vue-router.min.js"></script>
 </head>
 <body>
     <main>
         <div id="app">
+            <router-link :to="{ path: '/'}" class="link">HOME</router-link>
+            <router-link :to="{ path: '/users'}">USERS</router-link>
+            <a href="#/contact">CONTACT</a>
             <!-- the router view element is where the components get rendered when changing the address bar (the route) -->
-            <router-view></router-view>
+            <transition name="fade" mode="out-in">
+                <router-view></router-view>
+            </transition>
         </div>
     </main>
 
