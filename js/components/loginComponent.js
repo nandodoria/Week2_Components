@@ -25,16 +25,28 @@ export default {
             //check against our mock account creds
 
             if (this.input.username != "" && this.input.password != ""){
-                if (this.input.password == this.$parent.mockAccount.password){
-                    console.log("you are logged in!");
-                    this.$emit("authenticated", true);
-                    this.$router.replace({name: "users"});
+
+                    // do a fetch here and check creds on the back end
+                    let url = `./includes/index.php?username=${this.input.username}&&password=${this.input.password}`;
+
+                    fetch(url)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data[0] == "false" || data[0].length < 1) {
+                                console.log("authentication failed, try again");
+                            } else {
+                                //if the back-end authentication works, then go to the users page
+                                this.$emit("authenticated", true);
+                                this.$router.replace({ name: "users" });
+                            }
+                        })
+                        .catch(function(error) {
+                            console.error(error);
+                        });
                 } else {
                     console.log("login failed");
                 }
-            } else {
-                console.log("username and password can't be blank");
-            }
+
 
         }
     }
