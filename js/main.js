@@ -1,31 +1,30 @@
-(() => {
 
-    const liveuser = {
-        props: ['first_name', 'last_name', 'role'],
+    // components will go here
 
-        template: "#activeuser",
+    import LoginComponent from './components/loginComponent.js'; //this is like doing a php include
+    import UsersComponent from './components/usersComponent.js';
+    const routes = [
+        { path: '/', redirect: { name:"login"} },
+        { path: "/login", name: "login", component: LoginComponent },
+        { path: "/users", name: "users", component: UsersComponent }
+    ];
 
-        methods: {
-            logChildMsg() {
-                console.log("hello from the child component");
-            },
-
-            runParentFunc() {
-                this.$emit('pass-func-call-up')
-            }
-        },
-
-        created: function() {
-            console.log('child component is live');
-        }
-    };
+    const router = new VueRouter({
+        routes
+    });
 
 
     const vm = new Vue({
          el: '#app',
 
          data: {
-             message: "sup from vue!"
+             message: "sup from vue!",
+             authenticated : false,
+
+             mockAccount: {
+                 username: "admin",
+                 password: "qwerty"
+             }
          },
 
          created: function() {
@@ -39,15 +38,30 @@
 
              logMainMessage(){
                  console.log("called from inside a child, lives in the parent");
+             },
+
+             setAuthenticated(status){
+                 this.authenticated = status;
+             },
+
+             logout(){
+                 this.authenticated = false;
              }
          },
 
-         components: {
-            user: liveuser
-         }
+        
+         router: router
 
+    }).$mount("#app");
 
+// make the router check all of the routes and bounce back if we're not authenticated
 
-    })
+router.beforeEach((to, from, next) =>  {
+    console.log("router guard fired!");
 
-})();
+    if (vm.authenticated == false) {
+        next("/login");
+    } else {
+        next();
+    }
+});
