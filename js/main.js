@@ -1,56 +1,12 @@
-(() => {
 
-    const HomePageComponent = {
-        template: "<h2> You're on the home page </h2>"
+    // components will go here
 
-    };
-
-    const UsersPageComponent = {
-        props: ['id'],
-        template: "#userList",
-
-        data: function() {
-            return {
-                users: []
-            }
-        },
-
-        created: function(){
-            console.log('user component created!');
-
-            this.fetchUserData(this.id);
-        },
-
-        methods: {
-            fetchUserData(user) {
-                debugger;
-
-                let url = `./includes/index.php?user=${user}`;
-
-                fetch(url)
-                    .then(res=> res.json())
-                    .then(data => this.users = data)
-                    .catch(function(error){
-                        console.error(error);
-                    });
-            }
-        }
-    };
-    
-    const ContactPageComponent = {
-        template: "<h2> You're on the contact page<h2>"
-    };
-
-    const ErrorPageComponent = {
-        template: "<h2> Page not found!! Try again</h2>"
-    };
-
+    import LoginComponent from './components/loginComponent.js'; //this is like doing a php include
+    import UsersComponent from './components/usersComponent.js';
     const routes = [
-        { path: '/', name: 'home', component: HomePageComponent },
-        { path: '/users/:id', name: 'users', component: UsersPageComponent, props: true },
-        { path: '/contact', name: 'contact', component: ContactPageComponent },
-        { path: '/*', name: 'error', component: ErrorPageComponent }
-
+        { path: '/', redirect: { name:"login"} },
+        { path: "/login", name: "login", component: LoginComponent },
+        { path: "/users", name: "users", component: UsersComponent }
     ];
 
     const router = new VueRouter({
@@ -62,7 +18,13 @@
          el: '#app',
 
          data: {
-             message: "sup from vue!"
+             message: "sup from vue!",
+             authenticated : false,
+
+             mockAccount: {
+                 username: "admin",
+                 password: "qwerty"
+             }
          },
 
          created: function() {
@@ -76,20 +38,30 @@
 
              logMainMessage(){
                  console.log("called from inside a child, lives in the parent");
+             },
+
+             setAuthenticated(status){
+                 this.authenticated = status;
+             },
+
+             logout(){
+                 this.authenticated = false;
              }
          },
 
-         components: {
-            'HomePageComponent': HomePageComponent,
-            'UsersPageComponent': UsersPageComponent,
-            'ContactPageComponent': ContactPageComponent,
-            "ErrorPageComponent" : ErrorPageComponent,
-         },
-
+        
          router: router
 
+    }).$mount("#app");
 
+// make the router check all of the routes and bounce back if we're not authenticated
 
-    })
+router.beforeEach((to, from, next) =>  {
+    console.log("router guard fired!");
 
-})();
+    if (vm.authenticated == false) {
+        next("/login");
+    } else {
+        next();
+    }
+});
